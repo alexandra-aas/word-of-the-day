@@ -23,6 +23,11 @@
 		140ED2AC1D01E1AD002B40FF /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
+		655B01151E297BA100AF0054 /* Lora-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 655B01121E297BA100AF0054 /* Lora-Bold.ttf */; };
+		655B01161E297BA100AF0054 /* Lora-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 655B01131E297BA100AF0054 /* Lora-Regular.ttf */; };
+		655B01171E297BA100AF0054 /* WorkSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 655B01141E297BA100AF0054 /* WorkSans-Bold.ttf */; };
+		655B01321E297BD300AF0054 /* InputSerif-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 655B01311E297BD300AF0054 /* InputSerif-Regular.ttf */; };
+		655B01341E29DAC500AF0054 /* InputSerif-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 655B01331E29DAC500AF0054 /* InputSerif-Italic.ttf */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 /* End PBXBuildFile section */
 
@@ -232,6 +237,11 @@
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = dailyWord/main.m; sourceTree = "<group>"; };
 		146833FF1AC3E56700842450 /* React.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = React.xcodeproj; path = "../node_modules/react-native/React/React.xcodeproj"; sourceTree = "<group>"; };
 		5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTAnimation.xcodeproj; path = "../node_modules/react-native/Libraries/NativeAnimation/RCTAnimation.xcodeproj"; sourceTree = "<group>"; };
+		655B01121E297BA100AF0054 /* Lora-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Lora-Bold.ttf"; path = "../../../Downloads/fonts (1)/Lora/Lora-Bold.ttf"; sourceTree = "<group>"; };
+		655B01131E297BA100AF0054 /* Lora-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Lora-Regular.ttf"; path = "../../../Downloads/fonts (1)/Lora/Lora-Regular.ttf"; sourceTree = "<group>"; };
+		655B01141E297BA100AF0054 /* WorkSans-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "WorkSans-Bold.ttf"; path = "../../../Downloads/fonts (1)/Work_Sans/WorkSans-Bold.ttf"; sourceTree = "<group>"; };
+		655B01311E297BD300AF0054 /* InputSerif-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "InputSerif-Regular.ttf"; path = "../../../Library/Fonts/InputSerif-Regular.ttf"; sourceTree = "<group>"; };
+		655B01331E29DAC500AF0054 /* InputSerif-Italic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "InputSerif-Italic.ttf"; path = "../../../Library/Fonts/InputSerif-Italic.ttf"; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -420,6 +430,11 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				655B01331E29DAC500AF0054 /* InputSerif-Italic.ttf */,
+				655B01311E297BD300AF0054 /* InputSerif-Regular.ttf */,
+				655B01121E297BA100AF0054 /* Lora-Bold.ttf */,
+				655B01131E297BA100AF0054 /* Lora-Regular.ttf */,
+				655B01141E297BA100AF0054 /* WorkSans-Bold.ttf */,
 				13B07FAE1A68108700A75B9A /* dailyWord */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* dailyWordTests */,
@@ -489,6 +504,9 @@
 					00E356ED1AD99517003FC87E = {
 						CreatedOnToolsVersion = 6.2;
 						TestTargetID = 13B07F861A680F5B00A75B9A;
+					};
+					13B07F861A680F5B00A75B9A = {
+						DevelopmentTeam = YSFJ29L456;
 					};
 				};
 			};
@@ -747,8 +765,13 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				655B01321E297BD300AF0054 /* InputSerif-Regular.ttf in Resources */,
+				655B01151E297BA100AF0054 /* Lora-Bold.ttf in Resources */,
+				655B01161E297BA100AF0054 /* Lora-Regular.ttf in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
+				655B01341E29DAC500AF0054 /* InputSerif-Italic.ttf in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
+				655B01171E297BA100AF0054 /* WorkSans-Bold.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -847,6 +870,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
+				DEVELOPMENT_TEAM = YSFJ29L456;
 				INFOPLIST_FILE = dailyWord/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
@@ -864,6 +888,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = YSFJ29L456;
 				INFOPLIST_FILE = dailyWord/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
