@@ -20,7 +20,25 @@ const LORA_BOLD = 'Lora-Bold';
 const INPUT = 'InputSerif-Regular';
 const INPUT_ITALIC = 'InputSerif-Italic';
 
-const URL = 'http://api.wordnik.com/v4/words.json/wordOfTheDay?api_key=45a7e1f5f7730ce4d00090a23ae0d59558c2ae7b726623886';
+const RANDOM_WORD_URL = 'http://api.wordnik.com/v4/words.json/randomWord?hasDictionaryDef=false&minCorpusCount=0&maxCorpusCount=-1&minDictionaryCount=1&maxDictionaryCount=-1&minLength=5&maxLength=-1&api_key=45a7e1f5f7730ce4d00090a23ae0d59558c2ae7b726623886';
+const BASE_URL = 'http://api.wordnik.com/v4/word.json/';
+const API_KEY = 'api_key=45a7e1f5f7730ce4d00090a23ae0d59558c2ae7b726623886';
+const PRONUNCIATION_URL = '/pronunciations?useCanonical=false&typeFormat=ahd&limit=1&' + API_KEY;
+
+/**
+    if (partOfSpeech == 'adjective' ) {
+      color = '#EA8259';
+    } else if (partOfSpeech == 'adverb') {
+      color = '#4B989D';
+    } else if (partOfSpeech == 'noun') {
+      color = '#9FAC4C';
+    } else if (partOfSpeech == 'verb') {
+      color = '#997A9D';
+    } else {
+      color = '#CCA558';
+    }
+**/
+
 
 class InfoRow extends Component {
   render() {
@@ -42,45 +60,28 @@ export default class dailyWord extends Component {
       definition: null,
       partOfSpeech: null,
       example: null,
-      date: null,
+      date: moment(new Date()).format('MM/DD/YYYY'),
       color: null,
       pronunciation: null,
     }
   }
 
   componentDidMount() {
-    this.fetchData().done();
+    this.fetchRandomWord().done();
   }
 
-  async fetchData() {
-    const response = await fetch(URL);
-    const json = await response.json();
-    const word = json.word;
-    const note = json.note;
-    const definition = json.definitions[0].text;
-    const partOfSpeech = json.definitions[0].partOfSpeech;
-    const example = json.examples[0].text;
-    var color;
+  async fetchRandomWord() {
+    const randomWordResponse = await fetch(RANDOM_WORD_URL);
+    const randomWordJson = await randomWordResponse.json();
+    const word = randomWordJson.word;
 
-    if (partOfSpeech == 'adjective' ) {
-      color = '#EA8259';
-    } else if (partOfSpeech == 'adverb') {
-      color = '#4B989D';
-    } else if (partOfSpeech == 'noun') {
-      color = '#9FAC4C';
-    } else if (partOfSpeech == 'verb') {
-      color = '#997A9D';
-    } else {
-      color = '#CCA558';
-    }
+    const pronunciationResponse = await fetch(BASE_URL + word + PRONUNCIATION_URL);
+    const pronunciationJson = await pronunciationResponse.json();
+    const pronunciation = pronunciationJson[0].raw;
 
     this.setState({
       word: word,
-      note: note,
-      definition: definition,
-      partOfSpeech: partOfSpeech,
-      example: example,
-      color: color,
+      pronunciation: pronunciation || null,
     });
   }
 
@@ -89,7 +90,7 @@ export default class dailyWord extends Component {
       <ScrollView style={styles.container}>
         <View style={[styles.headerBar, {backgroundColor: this.state.color}]}>
           <Text style={styles.headerBarText}>Daily Word</Text>
-          <Text style={styles.headerBarText}>{moment(new Date()).format('MM/DD/YYYY')}</Text>
+          <Text style={styles.headerBarText}>{this.state.date}</Text>
         </View>
 
         <View style={styles.partOfSpeech}>
@@ -98,6 +99,7 @@ export default class dailyWord extends Component {
 
         <View style={styles.wordOfTheDay}>
           <Text style={styles.wordOfTheDayWord}>{this.state.word}</Text>
+          <Text style={styles.wordOfTheDayPronunciation}>{this.state.pronunciation}</Text>
         </View>
 
         <InfoRow
@@ -155,6 +157,13 @@ const styles = StyleSheet.create({
   wordOfTheDayWord: {
     fontFamily: LORA_BOLD,
     fontSize: 40,
+    textAlign: 'center',
+  },
+  wordOfTheDayPronunciation: {
+    color: '#999',
+    fontFamily: LORA,
+    fontSize: 16,
+    marginTop: 10,
     textAlign: 'center',
   },
   dividers: {
