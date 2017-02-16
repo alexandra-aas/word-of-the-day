@@ -20,25 +20,8 @@ const LORA_BOLD = 'Lora-Bold';
 const INPUT = 'InputSerif-Regular';
 const INPUT_ITALIC = 'InputSerif-Italic';
 
-const RANDOM_WORD_URL = 'http://api.wordnik.com/v4/words.json/randomWord?hasDictionaryDef=false&minCorpusCount=0&maxCorpusCount=-1&minDictionaryCount=1&maxDictionaryCount=-1&minLength=5&maxLength=-1&api_key=45a7e1f5f7730ce4d00090a23ae0d59558c2ae7b726623886';
-const BASE_URL = 'http://api.wordnik.com/v4/word.json/';
-const API_KEY = 'api_key=45a7e1f5f7730ce4d00090a23ae0d59558c2ae7b726623886';
-const PRONUNCIATION_URL = '/pronunciations?useCanonical=false&typeFormat=ahd&limit=1&' + API_KEY;
-
-/**
-    if (partOfSpeech == 'adjective' ) {
-      color = '#EA8259';
-    } else if (partOfSpeech == 'adverb') {
-      color = '#4B989D';
-    } else if (partOfSpeech == 'noun') {
-      color = '#9FAC4C';
-    } else if (partOfSpeech == 'verb') {
-      color = '#997A9D';
-    } else {
-      color = '#CCA558';
-    }
-**/
-
+const RANDOM_WORD_URL = 'https://wordsapiv1.p.mashape.com/words/?random=true'
+const API_KEY = 'BFm3aqOEOcmshI8pk3fEdGiOWYLup1F3VQ1jsnTevzbFXFVzm8'
 
 class InfoRow extends Component {
   render() {
@@ -55,13 +38,13 @@ export default class dailyWord extends Component {
   constructor() {
     super();
     this.state = {
+      date: moment(new Date()).format('MM/DD/YYYY'),
+      headerColor: null,
       word: null,
-      note: null,
       definition: null,
       partOfSpeech: null,
-      example: null,
-      date: moment(new Date()).format('MM/DD/YYYY'),
-      color: null,
+      synonyms: null,
+      typeOf: null,
       pronunciation: null,
     }
   }
@@ -71,24 +54,21 @@ export default class dailyWord extends Component {
   }
 
   async fetchRandomWord() {
-    const randomWordResponse = await fetch(RANDOM_WORD_URL);
-    const randomWordJson = await randomWordResponse.json();
-    const word = randomWordJson.word;
-
-    const pronunciationResponse = await fetch(BASE_URL + word + PRONUNCIATION_URL);
-    const pronunciationJson = await pronunciationResponse.json();
-    const pronunciation = pronunciationJson[0].raw;
+    const response = await fetch(RANDOM_WORD_URL, { method : 'GET', headers : {'X-Mashape-Key' : API_KEY, 'Accept' : 'application/json'}});
+    const json = await response.json();
+    const keys = Object.keys(json);
+    const results = keys.includes("results[0]") ? json.results[0] : null;
+    const word = json.word;
 
     this.setState({
       word: word,
-      pronunciation: pronunciation || null,
     });
   }
 
   render() {
     return (
       <ScrollView style={styles.container}>
-        <View style={[styles.headerBar, {backgroundColor: this.state.color}]}>
+        <View style={[styles.headerBar, {backgroundColor: this.state.headerColor}]}>
           <Text style={styles.headerBarText}>Daily Word</Text>
           <Text style={styles.headerBarText}>{this.state.date}</Text>
         </View>
@@ -102,17 +82,20 @@ export default class dailyWord extends Component {
           <Text style={styles.wordOfTheDayPronunciation}>{this.state.pronunciation}</Text>
         </View>
 
-        <InfoRow
-          headerText="Definition"
-          bodyText={this.state.definition} />
+        {for (var key of Object.keys(json.results[0])) {
+          return <InfoRow headerText=key bodyText=json.results[0][key] />
+        }}
+
+
 
         <InfoRow
-          headerText="Note"
-          bodyText={this.state.note} />
+          headerText="Type Of"
+          bodyText={this.state.typeOf} />
 
-        <InfoRow
-          headerText="Example"
-          bodyText={this.state.example} />
+        <View style={styles.infoRow}>
+          <Text style={styles.infoRowHeaderText}>{"Synonyms".toUpperCase()}</Text>
+          <Text style={styles.infoRowBodyText}>{this.state.synonyms}</Text>
+        </View>
       </ScrollView>
     )
   }
