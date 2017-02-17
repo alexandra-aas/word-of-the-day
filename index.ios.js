@@ -1,9 +1,3 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
- */
-
 import React, { Component } from 'react';
 import {
   AppRegistry,
@@ -20,8 +14,11 @@ const LORA_BOLD = 'Lora-Bold';
 const INPUT = 'InputSerif-Regular';
 const INPUT_ITALIC = 'InputSerif-Italic';
 
-const RANDOM_WORD_URL = 'https://wordsapiv1.p.mashape.com/words/?random=true'
-const API_KEY = 'BFm3aqOEOcmshI8pk3fEdGiOWYLup1F3VQ1jsnTevzbFXFVzm8'
+const BASE_URL = 'http://api.wordnik.com/v4/'
+const BASE_WORD_URL = BASE_URL + 'word.json/';
+const BASE_WORDS_URL = BASE_URL + 'words.json/';
+const API_KEY = 'api_key=45a7e1f5f7730ce4d00090a23ae0d59558c2ae7b726623886';
+const WORD_OF_THE_DAY_URL = BASE_WORDS_URL + 'wordOfTheDay?' + API_KEY;
 
 class InfoRow extends Component {
   render() {
@@ -38,13 +35,13 @@ export default class dailyWord extends Component {
   constructor() {
     super();
     this.state = {
-      date: moment(new Date()).format('MM/DD/YYYY'),
-      headerColor: null,
       word: null,
+      note: null,
       definition: null,
       partOfSpeech: null,
-      synonyms: null,
-      typeOf: null,
+      example: null,
+      date: moment(new Date()).format('MM/DD/YYYY'),
+      color: null,
       pronunciation: null,
     }
   }
@@ -54,21 +51,46 @@ export default class dailyWord extends Component {
   }
 
   async fetchRandomWord() {
-    const response = await fetch(RANDOM_WORD_URL, { method : 'GET', headers : {'X-Mashape-Key' : API_KEY, 'Accept' : 'application/json'}});
-    const json = await response.json();
-    const keys = Object.keys(json);
-    const results = keys.includes("results[0]") ? json.results[0] : null;
-    const word = json.word;
+    const wordResponse = await fetch(WORD_OF_THE_DAY_URL);
+    const wordJson = await wordResponse.json();
+    const word = wordJson.word;
+
+    const pronunciationResponse = await fetch(BASE_WORD_URL + word + '/pronunciations?useCanonical=false&limit=1&' + API_KEY);
+    const pronunciationJson = await pronunciationResponse.json();
+    const pronunciation = pronunciationJson[0].raw;
+
+    const note = wordJson.note;
+    const definition = wordJson.definitions[0].text;
+    const partOfSpeech = wordJson.definitions[0].partOfSpeech;
+    const example = wordJson.examples[0].text;
+
+    if (partOfSpeech == 'adjective' ) {
+      color = '#EA8259';
+    } else if (partOfSpeech == 'adverb') {
+      color = '#4B989D';
+    } else if (partOfSpeech == 'noun') {
+      color = '#9FAC4C';
+    } else if (partOfSpeech == 'verb') {
+      color = '#997A9D';
+    } else {
+      color = '#CCA558';
+    }
 
     this.setState({
       word: word,
+      note: note,
+      definition: definition,
+      partOfSpeech: partOfSpeech,
+      example: example,
+      color: color,
+      pronunciation: pronunciation.replace(/\(|\)/g,''),
     });
   }
 
   render() {
     return (
       <ScrollView style={styles.container}>
-        <View style={[styles.headerBar, {backgroundColor: this.state.headerColor}]}>
+        <View style={[styles.headerBar, {backgroundColor: this.state.color}]}>
           <Text style={styles.headerBarText}>Daily Word</Text>
           <Text style={styles.headerBarText}>{this.state.date}</Text>
         </View>
@@ -82,20 +104,17 @@ export default class dailyWord extends Component {
           <Text style={styles.wordOfTheDayPronunciation}>{this.state.pronunciation}</Text>
         </View>
 
-        {for (var key of Object.keys(json.results[0])) {
-          return <InfoRow headerText=key bodyText=json.results[0][key] />
-        }}
-
-
+        <InfoRow
+          headerText="Definition"
+          bodyText={this.state.definition} />
 
         <InfoRow
-          headerText="Type Of"
-          bodyText={this.state.typeOf} />
+          headerText="Note"
+          bodyText={this.state.note} />
 
-        <View style={styles.infoRow}>
-          <Text style={styles.infoRowHeaderText}>{"Synonyms".toUpperCase()}</Text>
-          <Text style={styles.infoRowBodyText}>{this.state.synonyms}</Text>
-        </View>
+        <InfoRow
+          headerText="Example"
+          bodyText={this.state.example} />
       </ScrollView>
     )
   }
@@ -144,31 +163,10 @@ const styles = StyleSheet.create({
   },
   wordOfTheDayPronunciation: {
     color: '#999',
-    fontFamily: LORA,
+    fontFamily: INPUT_ITALIC,
     fontSize: 16,
-    marginTop: 10,
+    marginTop: 15,
     textAlign: 'center',
-  },
-  dividers: {
-    borderBottomWidth: 2,
-    borderColor: '#000',
-    borderStyle: 'solid',
-    flex: 1,
-    flexDirection: 'row',
-    marginLeft: 30,
-    paddingRight: 30,
-  },
-  divider: {
-    borderColor: '#000',
-    borderStyle: 'solid',
-    flex: 1,
-    height: 25,
-  },
-  dividerLeft: {
-    borderRightWidth: 1,
-  },
-  dividerRight: {
-    borderLeftWidth: 1,
   },
   infoRow: {
     borderBottomWidth: 1,
@@ -176,8 +174,7 @@ const styles = StyleSheet.create({
     borderStyle: 'solid',
     marginLeft: 30,
     paddingRight: 30,
-    paddingTop: 30,
-    paddingBottom: 30,
+    paddingVertical: 30,
   },
   infoRowHeaderText: {
     fontFamily: WORK,
