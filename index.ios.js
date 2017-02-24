@@ -57,23 +57,28 @@ export default class dailyWord extends Component {
 
     const pronunciationResponse = await fetch(BASE_WORD_URL + word + '/pronunciations?useCanonical=false&limit=1&' + API_KEY);
     const pronunciationJson = await pronunciationResponse.json();
-    const pronunciation = pronunciationJson[0].raw;
+    const pronunciation = pronunciationJson.length > 0 ? pronunciationJson[0].raw : null;
 
     const note = wordJson.note;
     const definition = wordJson.definitions[0].text;
     const partOfSpeech = wordJson.definitions[0].partOfSpeech;
     const example = wordJson.examples[0].text;
 
-    if (partOfSpeech == 'adjective' ) {
-      color = '#EA8259';
-    } else if (partOfSpeech == 'adverb') {
-      color = '#4B989D';
-    } else if (partOfSpeech == 'noun') {
-      color = '#9FAC4C';
-    } else if (partOfSpeech == 'verb') {
-      color = '#997A9D';
-    } else {
-      color = '#CCA558';
+    switch(partOfSpeech) {
+      case 'adjective':
+        color = '#EA8259';
+        break;
+      case 'adverb':
+        color = '#4B989D';
+        break;
+      case 'noun':
+        color = '#9FAC4C';
+        break;
+      case 'verb':
+        color = '#997A9D';
+        break;
+      default:
+        color = '#CCA558';
     }
 
     this.setState({
@@ -83,7 +88,7 @@ export default class dailyWord extends Component {
       partOfSpeech: partOfSpeech,
       example: example,
       color: color,
-      pronunciation: pronunciation.replace(/\(|\)/g,''),
+      pronunciation: pronunciation,
     });
   }
 
