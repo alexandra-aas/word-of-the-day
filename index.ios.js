@@ -92,6 +92,14 @@ export default class dailyWord extends Component {
     });
   }
 
+  showPronunciation() {
+    if (this.state.pronunciation != null) {
+      return <Text style={styles.wordOfTheDayPronunciation}>{this.state.pronunciation}</Text>;
+    } else {
+      return false;
+    }
+  }
+
   render() {
     return (
       <ScrollView style={styles.container}>
@@ -106,7 +114,7 @@ export default class dailyWord extends Component {
 
         <View style={styles.wordOfTheDay}>
           <Text style={styles.wordOfTheDayWord}>{this.state.word}</Text>
-          <Text style={styles.wordOfTheDayPronunciation}>{this.state.pronunciation}</Text>
+          {this.showPronunciation()}
         </View>
 
         <InfoRow
